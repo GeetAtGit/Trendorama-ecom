@@ -9,6 +9,10 @@ import Product from "./models/Product.js";
 
 import { registerUser, loginUser } from "./controllers/authController.js";
 import { protect, isAdmin } from "./middlewares/authMiddleware.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
+
+
+
 
 
 dotenv.config();
@@ -39,6 +43,8 @@ app.get("/api/products", async (req, res) => {
 });
 
 app.use("/api/cart", cartRoutes);
+app.use("/api/payment", paymentRoutes);
+
 
 console.log("📦 Available routes:");
 console.table(
@@ -52,6 +58,10 @@ console.table(
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.log("❌ DB Error:", err));
+
+console.log("📌 Routes:");
+console.table(listEndpoints(app));
+
 
 const PORT = process.env.PORT || 5050;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

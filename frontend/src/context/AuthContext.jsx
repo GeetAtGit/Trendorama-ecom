@@ -1,16 +1,13 @@
-// src/context/AuthContext.jsx
 import { createContext, useState, useEffect, useContext } from "react";
 
 function decodeToken(token) {
   try {
     const base64Url = token.split(".")[1];
-    const base64    = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
       atob(base64)
         .split("")
-        .map((c) =>
-          "%" + c.charCodeAt(0).toString(16).padStart(2, "0")
-        )
+        .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
         .join("")
     );
     return JSON.parse(jsonPayload);
@@ -22,8 +19,14 @@ function decodeToken(token) {
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [user, setUser]   = useState(token ? decodeToken(token) : null);
+  const rawToken = localStorage.getItem("token");
+  const cleanedToken =
+    rawToken && rawToken !== "null" && rawToken !== "undefined"
+      ? rawToken
+      : null;
+
+  const [token, setToken] = useState(cleanedToken);
+  const [user, setUser] = useState(cleanedToken ? decodeToken(cleanedToken) : null);
 
   useEffect(() => {
     if (token) setUser(decodeToken(token));
