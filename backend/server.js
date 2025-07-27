@@ -10,8 +10,8 @@ import Product from "./models/Product.js";
 import { registerUser, loginUser } from "./controllers/authController.js";
 import { protect, isAdmin } from "./middlewares/authMiddleware.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
-
-
+import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 
 
@@ -44,6 +44,10 @@ app.get("/api/products", async (req, res) => {
 
 app.use("/api/cart", cartRoutes);
 app.use("/api/payment", paymentRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+
+
 
 
 console.log("📦 Available routes:");

@@ -8,6 +8,9 @@ import UserDashboard  from "./pages/UserDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import CartPage       from "./pages/CartPage";
 import PrivateRoute   from "./components/PrivateRoute";
+import Profile        from "./pages/Profile";
+import Orders from "./pages/Orders";
+
 
 export default function App() {
   return (
@@ -19,6 +22,9 @@ export default function App() {
         <Route path="/"        element={<LandingPage />} />
         <Route path="/shop"    element={<ProductsPage />} />
         <Route path="/auth"    element={<AuthPage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/orders"  element={<Orders />} />
+
 
         <Route
           path="/dashboard"
