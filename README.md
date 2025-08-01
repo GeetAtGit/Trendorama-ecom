@@ -13,12 +13,19 @@ A modern **MERN-stack e-commerce platform** with secure JWT- based authenticatio
 ## 🌐 **Live Demo**
 🔗 [Website](https://trendorama-ecom.netlify.app/)  
 
+### **🫆Demo credentials**
+- email: usernew@gmail.com
+- password: usernew
+
 
 ## 📸 **Screenshots**
-![Homepage](./screenshots/homepage.png)
-![Shop](./screenshots/shop.png)
-![Cart](./screenshots/cart.png)
-![Checkout](./screenshots/checkout.png)
+![Homepage](https://github.com/user-attachments/assets/355e2162-2050-4ede-a98c-15180d50cb55)
+![Shop-grid](https://github.com/user-attachments/assets/2a7acf1e-3da7-41a0-b3be-af0b76594bdc)
+![Shop-list](https://github.com/user-attachments/assets/0885cd9d-a8c1-4fe2-8e42-a777e605c90a)
+![Cart](https://github.com/user-attachments/assets/80bf0b8d-9aca-453a-b3d2-e1c80807b905)
+![Checkout](https://github.com/user-attachments/assets/3200ad2d-a28c-48fd-8114-f3af3efd2f59)
+![Orders](https://github.com/user-attachments/assets/be62d905-6cd2-47b5-a284-de78c71721fb)
+
 
 ---
 
