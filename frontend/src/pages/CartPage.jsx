@@ -6,6 +6,9 @@ import { useState, useEffect } from "react";
 import AddressDialog from "../components/AddressDialog";
 import { FiPlus, FiEdit, FiTrash2, FiMapPin } from "react-icons/fi";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5050";
+
+
 
 export default function CartPage() {
   const { cart, updateCartItem, removeFromCart } = useCart();
@@ -86,7 +89,7 @@ export default function CartPage() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5050/api/payment/create-order",
+        `${API}/api/payment/create-order`,
         { amount: total, address: fullAddress },
         { headers: { Authorization: `Bearer ${token}` } }
       );

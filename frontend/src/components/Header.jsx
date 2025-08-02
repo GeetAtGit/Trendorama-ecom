@@ -30,6 +30,7 @@ export default function Header() {
 
         {/* Logo Center (Optional) */}
         <Link to="/" className="text-xl font-bold text-black">
+
           Trendorama
         </Link>
 

@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5050";
+
+
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [view, setView]       = useState("grid");
@@ -9,7 +13,7 @@ export default function ProductsPage() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5050/api/products")
+      .get(`${API}/api/products`)
       .then(res => setProducts(res.data))
       .catch(err => console.error(err));
   }, []);

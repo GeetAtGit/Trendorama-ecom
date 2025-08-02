@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
+
+const API = import.meta.env.VITE_API_URL || "http://localhost:5050";
 
 export default function AuthPage() {
   const navigate = useNavigate();
+  const { login } = useAuth(); // ✅ use login from AuthContext
   const [isRegister, setIsRegister] = useState(false);
   const [role, setRole] = useState("user");
   const [formData, setFormData] = useState({
@@ -17,67 +21,52 @@ export default function AuthPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // 1. Validate confirm password on register
-  if (isRegister && formData.password !== formData.confirmPassword) {
-    return alert("Passwords do not match");
-  }
+    if (isRegister && formData.password !== formData.confirmPassword) {
+      return alert("Passwords do not match");
+    }
 
-  try {
-    if (isRegister) {
-      // ─── REGISTER FLOW ─────────────────────────────────────────────
-      const res = await axios.post(
-        "http://localhost:5050/api/register",
-        {
+    try {
+      if (isRegister) {
+        // ─── REGISTER FLOW ─────────────────────────────────────────────
+        const res = await axios.post(`${API}/api/register`, {
           name: formData.name,
           email: formData.email,
           password: formData.password,
           role
-        }
-      );
-      // your backend sends: { message: "User registered successfully" }
-      alert(res.data.message || "Registered successfully!");
-      // switch to login form
-      setIsRegister(false);
-      // clear form (optional)
-      setFormData({ name: "", email: "", password: "", confirmPassword: "" });
-    } else {
-      // ─── LOGIN FLOW ────────────────────────────────────────────────
-      const res = await axios.post(
-        "http://localhost:5050/api/login",
-        {
+        });
+        alert(res.data.message || "Registered successfully!");
+        setIsRegister(false);
+        setFormData({ name: "", email: "", password: "", confirmPassword: "" });
+      } else {
+        // ─── LOGIN FLOW ────────────────────────────────────────────────
+        const res = await axios.post(`${API}/api/login`, {
           email: formData.email,
           password: formData.password
-        }
-      );
-      // your backend sends: { token: "..." }
-      const token = res.data.token;
-      localStorage.setItem("token", token);
+        });
 
-      // decode token payload to read role
-      const base64Url = token.split(".")[1];
-      const base64    = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-      const userPayload = JSON.parse(atob(base64));
-      const actualRole = userPayload.role;
+        const token = res.data.token;
 
-      // navigate based on role
-      if (actualRole === "admin") {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/dashboard");
+        // ✅ Use AuthContext to save token and update user state
+        login(token);
+
+        // ✅ Decode token to get user role
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+        const userPayload = JSON.parse(atob(base64));
+        const actualRole = userPayload.role;
+
+        navigate(actualRole === "admin" ? "/" : "/");
       }
+    } catch (err) {
+      alert(err.response?.data?.error || "Something went wrong");
     }
-  } catch (err) {
-    // handles validation errors, network errors, etc.
-    alert(err.response?.data?.error || "Something went wrong");
-  }
-};
-
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-white to-purple-100 p-4">
-      <div className="w-full max-w-md bg-white/30 backdrop-blur-lg  shadow-2xl border border-white/40">
+      <div className="w-full max-w-md bg-white/30 backdrop-blur-lg shadow-2xl border border-white/40">
 
         {/* Login / Register Toggle */}
         <div className="flex">
@@ -198,10 +187,7 @@ export default function AuthPage() {
               </div>
             )}
 
-            <button
-              type="submit"
-              className="btn w-full"
-            >
+            <button type="submit" className="btn w-full">
               {isRegister ? "Create Account" : "Login"}
             </button>
           </form>

@@ -2,13 +2,17 @@ import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5050";
+
+
 export default function Profile() {
   const { token, logout } = useAuth();
   const [profile, setProfile] = useState({ name: "", email: "", role: "" });
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
-    axios.get("http://localhost:5050/api/users/profile", {
+    axios.get(`${API}/api/users/profile`, {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(res => setProfile(res.data))
@@ -21,7 +25,7 @@ export default function Profile() {
 
   const handleSave = async () => {
   try {
-    const res = await axios.put("http://localhost:5050/api/users/profile", profile, {
+    const res = await axios.put(`${API}/api/users/profile`, profile, {
       headers: { Authorization: `Bearer ${token}` }
     });
     setProfile(res.data); // ✅ Use saved user from backend

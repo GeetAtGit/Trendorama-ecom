@@ -4,6 +4,9 @@ import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
 
+const API = import.meta.env.VITE_API_URL || "http://localhost:5050";
+
+
 export function CartProvider({ children }) {
   const { token, logout } = useAuth();
   const [cart, setCart] = useState({ items: [] });
@@ -15,7 +18,7 @@ export function CartProvider({ children }) {
     }
 
     axios
-      .get("http://localhost:5050/api/cart", {
+      .get(`${API}/api/cart`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setCart(res.data))
@@ -38,7 +41,7 @@ export function CartProvider({ children }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:5050/api/cart",
+        `${API}/api/cart`,
         { productId, quantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -56,7 +59,7 @@ export function CartProvider({ children }) {
   const updateCartItem = async (itemId, quantity) => {
     try {
       const res = await axios.put(
-        `http://localhost:5050/api/cart/${itemId}`,
+        `${API}/api/cart/${itemId}`,
         { quantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -69,7 +72,7 @@ export function CartProvider({ children }) {
   const removeFromCart = async (itemId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:5050/api/cart/${itemId}`,
+        `${API}/api/cart/${itemId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

@@ -10,4 +10,16 @@ export default defineConfig({
     tailwindcss(),
 
   ],
+   build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            return "vendor";
+          }
+        },
+      },
+    },
+  },
+  base: '/', // Adjust this if your app is hosted in a subdirectory
 })
